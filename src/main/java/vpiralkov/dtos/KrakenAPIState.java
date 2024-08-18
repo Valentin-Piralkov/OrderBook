@@ -1,9 +1,13 @@
 package vpiralkov.dtos;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+/**
+ * This class maintains the current state of the API connection,
+ * State can be either DISCONNECTED, CONNECTED_SUCCESSFULLY, or SUBSCRIBED.
+ * It also keeps track of the subscription status of different pairs.
+ **/
 
 public class KrakenAPIState {
     public enum State {
@@ -13,7 +17,7 @@ public class KrakenAPIState {
     }
 
     private State currentState;
-    private HashMap<String, Boolean> subscriptionPairs;
+    private final HashMap<String, Boolean> subscriptionPairs;
 
     public KrakenAPIState(List<String> pairs) {
         currentState = State.DISCONNECTED;

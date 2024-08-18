@@ -12,6 +12,9 @@ public class KrakenUpdateResponse {
     @JsonProperty("data")
     public KrakenUpdateData[] data;
 
+    public KrakenUpdateResponse() {
+    }
+
     public String getChannel() {
         return channel;
     }
@@ -55,4 +58,15 @@ public class KrakenUpdateResponse {
         return data[0].timestamp;
     }
 
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setData(KrakenUpdateData[] data) {
+        this.data = data;
+    }
 }

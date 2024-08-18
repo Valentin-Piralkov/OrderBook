@@ -4,6 +4,7 @@ import vpiralkov.env.EnvironmentGlobals;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.concurrent.CountDownLatch;
 
@@ -27,7 +28,7 @@ public class WebSocketClient {
     public void connect() {
         try {
             //connect web socket
-            WebSocket.Builder builder = java.net.http.HttpClient.newHttpClient().newWebSocketBuilder();
+            WebSocket.Builder builder = HttpClient.newHttpClient().newWebSocketBuilder();
             webSocket = builder.buildAsync(this.uri, new WebSocketListener()).join();
             // wait for client to establish connection
             latch.await();

@@ -18,6 +18,9 @@ public class KrakenSubscribedResponse {
     @JsonProperty("time_out")
     public String time_out;
 
+    public KrakenSubscribedResponse() {
+    }
+
     public String getMethod() {
         return method;
     }
@@ -48,5 +51,25 @@ public class KrakenSubscribedResponse {
 
     public String getChannel() {
         return result.channel;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setResult(KrakenSubscribedResult result) {
+        this.result = result;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    public void setTime_in(String time_in) {
+        this.time_in = time_in;
+    }
+
+    public void setTime_out(String time_out) {
+        this.time_out = time_out;
     }
 }

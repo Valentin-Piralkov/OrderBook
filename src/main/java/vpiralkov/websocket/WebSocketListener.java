@@ -13,6 +13,7 @@ import vpiralkov.utils.JsonReader;
 import java.io.IOException;
 import java.net.http.WebSocket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 /**
@@ -39,8 +40,17 @@ public class WebSocketListener implements WebSocket.Listener {
     public WebSocketListener() {
         super();
         this.state = new KrakenAPIState(EnvironmentGlobals.PAIRS);
-        this.orderBooks.put("BTC/USD", new OrderBook("BTC/USD"));
-        this.orderBooks.put("ETH/USD", new OrderBook("ETH/USD"));
+        for (String pair : EnvironmentGlobals.PAIRS) {
+            this.orderBooks.put(pair, new OrderBook(pair));
+        }
+    }
+
+    public WebSocketListener(List<String> pairs) {
+        super();
+        this.state = new KrakenAPIState(pairs);
+        for (String pair : pairs) {
+            this.orderBooks.put(pair, new OrderBook(pair));
+        }
     }
 
     @Override
@@ -125,4 +135,17 @@ public class WebSocketListener implements WebSocket.Listener {
     public void onError(WebSocket webSocket, Throwable error) {
         System.out.println("WebSocket error: " + error.getMessage());
     }
+
+    public KrakenAPIState.State getState() {
+        return state.getCurrentState();
+    }
+
+    public HashMap<String, OrderBook> getOrderBooks() {
+        return orderBooks;
+    }
+
+    public KrakenAPIState getKrakenAPIState() {
+        return state;
+    }
+
 }

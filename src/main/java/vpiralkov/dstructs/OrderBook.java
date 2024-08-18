@@ -34,25 +34,37 @@ public class OrderBook {
         this.asks = new TreeMap<>(Comparator.reverseOrder());
     }
 
+    public String getPair() {
+        return pair;
+    }
+
+    public TreeMap<Double, Double> getBids() {
+        return bids;
+    }
+
+    public TreeMap<Double, Double> getAsks() {
+        return asks;
+    }
+
     public void updateBid(double price, double qty) {
         if (qty == 0) {
-            bids.remove(price);
+            this.bids.remove(price);
         } else {
-            bids.put(price, qty);
+            this.bids.put(price, qty);
         }
     }
 
     public void updateAsk(double price, double qty) {
         if (qty == 0) {
-            asks.remove(price);
+            this.asks.remove(price);
         } else {
-            asks.put(price, qty);
+            this.asks.put(price, qty);
         }
     }
 
     public void updateOrderBook(KrakenUpdateResponse krakenUpdateResponse) {
         // Check if the update is for the correct currency pair
-        if (!Objects.equals(krakenUpdateResponse.getSymbol(), pair)) {
+        if (!Objects.equals(krakenUpdateResponse.getSymbol(), this.pair)) {
             return;
         }
         // Update the order book with the new bids and asks
@@ -72,12 +84,37 @@ public class OrderBook {
     public void printOrders(String symbol, String timestamp) {
         System.out.println("<------------------------------------>");
         System.out.println("Asks:");
-        asks.forEach((price, qty) -> System.out.println("[ " + price + ", " + qty + " ]"));
-        System.out.println("Best ask: [ " + asks.lastEntry().getKey() + ", " + asks.lastEntry().getValue() + " ]");
-        System.out.println("Best bid: [ " + bids.firstEntry().getKey() + ", " + bids.firstEntry().getValue() + " ]");
+        // print the asks as a 2D array
+        for (int i = 0; i < this.asks.size(); i++) {
+            if (i == 0) {
+                System.out.println("[ [ " + this.asks.keySet().toArray()[i] + ", " + this.asks.values().toArray()[i] + " ],");
+            }
+            else if (i == this.asks.size() - 1) {
+                System.out.println("  [ " + this.asks.keySet().toArray()[i] + ", " + this.asks.values().toArray()[i] + " ] ]");
+            }
+            else {
+                System.out.println("  [ " + this.asks.keySet().toArray()[i] + ", " + this.asks.values().toArray()[i] + " ],");
+            }
+        }
+        // print the best ask and best bid
+        System.out.println("Best ask: [ " + this.asks.lastEntry().getKey() + ", " + this.asks.lastEntry().getValue() + " ]");
+        System.out.println("Best bid: [ " + this.bids.firstEntry().getKey() + ", " + this.bids.firstEntry().getValue() + " ]");
         System.out.println("Bids:");
-        bids.forEach((price, qty) -> System.out.println("[ " + price + ", " + qty + " ]"));
-        System.out.println(timestamp);
+        // print the bids as a 2D array
+        for (int i = 0; i < this.bids.size(); i++) {
+            if (i == 0) {
+                System.out.println("[ [ " + this.bids.keySet().toArray()[i] + ", " + this.bids.values().toArray()[i] + " ],");
+            }
+            else if (i == this.bids.size() - 1) {
+                System.out.println("  [ " + this.bids.keySet().toArray()[i] + ", " + this.bids.values().toArray()[i] + " ] ]");
+            }
+            else {
+                System.out.println("  [ " + this.bids.keySet().toArray()[i] + ", " + this.bids.values().toArray()[i] + " ],");
+            }
+        }
+        if (timestamp != null) {
+            System.out.println(timestamp);
+        }
         System.out.println(symbol);
         System.out.println(">------------------------------------<");
     }
